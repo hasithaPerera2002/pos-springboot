@@ -9,8 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/api/v1/customers",
-            consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
+@RequestMapping(value = "/api/v1/customers",consumes = {MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_JSON_VALUE})
 public class CustomerController {
 
     @PostMapping
@@ -23,7 +22,6 @@ public class CustomerController {
 
     @PutMapping(params = "id")
     public ResponseEntity<StandardResponse> updateCustomer(@RequestParam int id,@RequestBody RequestCustomerDto customerDto) throws ClassNotFoundException {
-
         var saveData = DataBase.updateCustomer(customerDto,id);
         return new ResponseEntity <> ( new StandardResponse(201,"customer updated",saveData), HttpStatus.CREATED);
 
@@ -42,12 +40,11 @@ public class CustomerController {
 
     }
 
-    @GetMapping("/list")
-
-    public String getAll(@RequestParam int page,
+   @GetMapping(value = "/list" ,params = {"page","size","searchText"})
+    public ResponseEntity<StandardResponse> getAll(@RequestParam int page,
                          @RequestParam int size,
                          @RequestParam String searchText
                          ) {
-        return "all Customers";
+        return new ResponseEntity<>(new StandardResponse(201,"customer data",DataBase.allCustomers(page,size,searchText)), HttpStatus.OK);
     }
 }

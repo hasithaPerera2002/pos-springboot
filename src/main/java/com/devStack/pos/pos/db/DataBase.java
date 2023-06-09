@@ -3,8 +3,10 @@ package com.devStack.pos.pos.db;
 import com.devStack.pos.pos.dto.core.CustomerDto;
 import com.devStack.pos.pos.dto.request.RequestCustomerDto;
 import com.devStack.pos.pos.dto.response.ResponseCustomerDto;
+import com.devStack.pos.pos.dto.response.paginated.model.CustomerPaginatedDto;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -76,5 +78,16 @@ throw new ClassNotFoundException();
 
         }
         throw new ClassNotFoundException();
+    }
+
+    public static CustomerPaginatedDto allCustomers(int page, int size, String searchText) {
+        List<ResponseCustomerDto>list=new ArrayList<>();
+        for (CustomerDto p:customerTable
+             ) {
+            list.add(new ResponseCustomerDto(
+                    p.getPublicId(), p.isActiveState(), p.getName(), p.getAddress(), p.getSalary()
+            ));
+        }
+        return new CustomerPaginatedDto(customerTable.size(), list);
     }
 }

@@ -23,9 +23,9 @@ public class CustomerDto {
 
     private  double salary;
 
-    private Blob fileName;
+    private String fileName;
 
-    private Blob resourceURL;
+    private String resourceURL;
 
     private Blob directory;
 
