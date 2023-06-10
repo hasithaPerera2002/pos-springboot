@@ -3,19 +3,28 @@ package com.devStack.pos.pos.api;
 import com.devStack.pos.pos.db.DataBase;
 import com.devStack.pos.pos.dto.request.RequestCustomerDto;
 import com.devStack.pos.util.StandardResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import service.CustomerService;
 
 @RestController
 @RequestMapping(value = "/api/v1/customers",consumes = {MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_JSON_VALUE})
 public class CustomerController {
+    private final CustomerService customerService;
+
+    @Autowired
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+
 
     @PostMapping
     public ResponseEntity<StandardResponse> createCustomer(@RequestBody RequestCustomerDto requestCustomerDto) {
         System.out.println("created");
-        var saveData = DataBase.createCustomer(requestCustomerDto).toString();
+        var saveData = customerService.createCustomer(requestCustomerDto).toString();
         return new ResponseEntity<>(new StandardResponse(201,"customer save",saveData), HttpStatus.ACCEPTED);
 
     }
